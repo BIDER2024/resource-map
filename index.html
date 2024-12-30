@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מפת משאבים אישית</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            direction: rtl;
+        }
+
+        .text-large {
+            font-size: 1.2rem;
+        }
+
+        .resource-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function ResourceMap() {
+            const [situation, setSituation] = React.useState('');
+            const [activeResource, setActiveResource] = React.useState(null);
+            const [ratings, setRatings] = React.useState({});
+            const [notes, setNotes] = React.useState({});
+
+            const resources = {
+                'אישיים': [
+                    'חוסן נפשי',
+                    'ביטחון עצמי',
+                    'יכולת התמודדות',
+                    'גמישות מחשבתית'
+                ],
+                'חברתיים': [
+                    'תמיכה משפחתית',
+                    'חברים קרובים',
+                    'קהילה',
+                    'רשת מקצועית'
+                ],
+                'מעשיים': [
+                    'כלים וידע',
+                    'ניסיון קודם',
+                    'משאבים כלכליים',
+                    'זמן פנוי'
+                ],
+                'רגשיים': [
+                    'מודעות עצמית',
+                    'ויסות רגשי',
+                    'אופטימיות',
+                    'מוטיבציה'
+                ]
+            };
+
+            const developmentTools = {
+                'חוסן נפשי': {
+                    כלים: [
+                        'תרגולי מיינדפולנס יומיים',
+                        'יומן הכרת תודה',
+                        'תרגילי נשימה ורגיעה',
+                        'מדיטציה מודרכת'
+                    ],
+                    פעולות: [
+                        'זיהוי וכתיבת הצלחות יומיות',
+                        'פיתוח שגרת בוקר מחזקת',
+                        'יצירת רשת תמיכה',
+                        'תרגול התמודדות עם אתגרים קטנים'
+                    ]
+                },
+                'ביטחון עצמי': {
+                    כלים: [
+                        'יומן הצלחות והישגים',
+                        'תרגולי אסרטיביות',
+                        'הצבת יעדים קטנים וברי השגה',
+                        'תרגילי דיבור מול מראה'
+                    ],
+                    פעולות: [
+                        'לקיחת אחריות על משימות חדשות',
+                        'יציאה הדרגתית מאזור הנוחות',
+                        'חגיגת הישגים קטנים',
+                        'התנסות בדברים חדשים'
+                    ]
+                },
+                'יכולת התמודדות': {
+                    כלים: [
+                        'טכניקות הרפיה',
+                        'ניתוח מצבים מאתגרים',
+                        'תכנון תרחישים מראש',
+                        'למידה מניסיון העבר'
+                    ],
+                    פעולות: [
+                        'פיתוח גמישות מחשבתית',
+                        'בקשת עזרה כשצריך',
+                        'תיעוד התמודדויות מוצלחות',
+                        'יצירת תוכניות גיבוי'
+                    ]
+                }
+            };
+
+            const categories = Object.keys(resources);
+
+            const getCirclePosition = (index, total, radius, centerX, centerY) => {
+                const angle = (index * 2 * Math.PI) / total;
+                return {
+                    x: centerX + radius * Math.cos(angle - Math.PI / 2),
+                    y: centerY + radius * Math.sin(angle - Math.PI / 2)
+                };
+            };
+
+            const getRatingColor = (rating) => {
+                switch(rating) {
+                    case 1: return '#FF9999';
+                    case 2: return '#FFD699';
+                    case 3: return '#99FF99';
+                    case 4: return '#9999FF';
+                    default: return '#CCCCCC';
+                }
+            };
+
+            const handleRatingChange = (resource, rating) => {
+                setRatings(prev => ({
+                    ...prev,
+                    [resource]: rating
+                }));
+            };
+
+            const handleNoteChange = (resource, note) => {
+                setNotes(prev => ({
+                    ...prev,
+                    [resource]: note
+                }));
+            };
+
+            return (
+                <div className="p-4 max-w-6xl mx-auto">
+                    <div className="mb-8">
+                        <h1 className="text-3xl font-bold mb-4 text-center">מפת המשאבים שלי</h1>
+                        <div className="mb-6">
+                            <label className="block text-xl text-gray-700 mb-2">
+                                הסיטואציה שברצוני לבחון:
+                            </label>
+                            <input
+                                type="text"
+                                value={situation}
+                                onChange={(e) => setSituation(e.target.value)}
+                                className="w-full p-3 border rounded-lg text-lg"
+                                placeholder="תאר/י את הסיטואציה..."
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="w-full lg:w-2/3">
+                            <svg viewBox="0 0 600 600" className="w-full h-full">
+                                {[4, 3, 2, 1].map((level) => (
+                                    <g key={level}>
+                                        <circle
+                                            cx="300"
+                                            cy="300"
+                                            r={level * 60}
+                                            fill="none"
+                                            stroke="#ddd"
+                                            strokeWidth="1"
+                                        />
+                                        <text
+                                            x="300"
+                                            y={300 - (level * 60) + 20}
+                                            textAnchor="middle"
+                                            fill="#666"
+                                            fontSize="16"
+                                            fontWeight="bold"
+                                        >
+                                            {level}
+                                        </text>
+                                    </g>
+                                ))}
+
+                                {categories.map((category, categoryIndex) => (
+                                    resources[category].map((resource, resourceIndex) => {
+                                        const totalResources = Object.values(resources).flat().length;
+                                        const index = categoryIndex * resources[category].length + resourceIndex;
+                                        const pos = getCirclePosition(index, totalResources, 240, 300, 300);
+                                        const rating = ratings[resource] || 0;
+                                        const ratingPos = getCirclePosition(
+                                            index,
+                                            totalResources,
+                                            rating * 60,
+                                            300,
+                                            300
+                                        );
+
+                                        return (
+                                            <g key={resource}>
+                                                <line
+                                                    x1="300"
+                                                    y1="300"
+                                                    x2={pos.x}
+                                                    y2={pos.y}
+                                                    stroke="#eee"
+                                                    strokeWidth="1"
+                                                />
+                                                
+                                                {rating > 0 && (
+                                                    <g>
+                                                        <circle
+                                                            cx={ratingPos.x}
+                                                            cy={ratingPos.y}
+                                                            r="15"
+                                                            fill={getRatingColor(rating)}
+                                                            opacity="0.8"
+                                                        />
+                                                        <text
+                                                            x={ratingPos.x}
+                                                            y={ratingPos.y + 5}
+                                                            textAnchor="middle"
+                                                            fill="white"
+                                                            fontSize="12"
+                                                            fontWeight="bold"
+                                                        >
+                                                            {rating}
+                                                        </text>
+                                                    </g>
+                                                )}
+
+                                                <g
+                                                    transform={`translate(${pos.x}, ${pos.y})`}
+                                                    onClick={() => setActiveResource(resource)}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    <circle
+                                                        r="6"
+                                                        fill={activeResource === resource ? "#3B82F6" : "#93C5FD"}
+                                                    />
+                                                    <text
+                                                        x={pos.x > 300 ? 10 : -10}
+                                                        y="5"
+                                                        textAnchor={pos.x > 300 ? "start" : "end"}
+                                                        fontSize="14"
+                                                        fill="#4B5563"
+                                                        className="font-medium"
+                                                    >
+                                                        {resource}
+                                                    </text>
+                                                </g>
+                                            </g>
+                                        );
+                                    })
+                                ))}
+
+                                {/* מקרא */}
+                                <g transform="translate(20, 20)">
+                                    <text fontSize="14" fill="#4B5563" fontWeight="bold">
+                                        עוצמת משאב:
+                                    </text>
+                                    {[
+                                        { level: 1, color: '#FF9999', text: 'חלש' },
+                                        { level: 2, color: '#FFD699', text: 'בינוני' },
+                                        { level: 3, color: '#99FF99', text: 'חזק' },
+                                        { level: 4, color: '#9999FF', text: 'חזק מאוד' }
+                                    ].map((item, i) => (
+                                        <g key={item.level} transform={`translate(${i * 100}, 25)`}>
+                                            <rect width="20" height="20" fill={item.color}/>
+                                            <text x="25" y="15" fontSize="14" fill="#4B5563">
+                                                {`${item.text} (${item.level})`}
+                                            </text>
+                                        </g>
+                                    ))}
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div className="w-full lg:w-1/3">
+                            {activeResource ? (
+                                <div className="bg-white p-6 rounded-lg shadow-lg">
+                                    <h3 className="text-2xl font-bold mb-4">{activeResource}</h3>
+                                    <div className="mb-6">
+                                        <label className="block text-xl text-gray-700 mb-2">
+                                            דירוג (1-4):
+                                        </label>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="4"
+                                            step="1"
+                                            value={ratings[activeResource] || 0}
+                                            onChange={(e) => handleRatingChange(activeResource, Number(e.target.value))}
+                                            className="w-full"
+                                        />
+                                        <div className="flex justify-between text-lg text-gray-600">
+                                            <span>חלש</span>
+                                            <span>בינוני</span>
+                                            <span>חזק</span>
+                                            <span>חזק מאוד</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xl text-gray-700 mb-2">
+                                            הערות:
+                                        </label>
+                                        <textarea
+                                            value={notes[activeResource] || ''}
+                                            onChange={(e) => handleNoteChange(activeResource, e.target.value)}
+                                            className="w-full p-3 border rounded-lg text-lg"
+                                            rows="4"
+                                            placeholder="הוסף/י הערות..."
+                                        />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="bg-blue-50 p-6 rounded-lg text-center">
+                                    <p className="text-xl text-blue-800">
+                                        בחר/י משאב במפה כדי לדרג ולהוסיף הערות
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* ניתוח והמלצות */}
+                    <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
+                        <h3 className="text-2xl font-bold mb-6">ניתוח והמלצות לפיתוח</h3>
+                        
+                        {Object.entries(ratings)
+                            .filter(([resource, rating]) => rating <= 2)
+                            .map(([resource, rating]) => (
+                                <div key={resource} className="resource-card mb-6">
+                                    <h4 className="text-xl font-bold text-blue-700 mb-4">
+                                        {resource} (דירוג נוכחי: {rating}/4)
+                                    </h4>{developmentTools[resource] && (
+                                        <>
+                                            <div className="mt-4">
+                                                <h5 className="text-lg font-semibold text-gray-700">
+                                                    כלים לפיתוח המשאב:
+                                                </h5>
+                                                <ul className="list-disc list-inside mt-2 space-y-2">
+                                                    {developmentTools[resource].כלים.map((tool, i) => (
+                                                        <li key={i} className="text-gray-600 text-lg">
+                                                            {tool}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            
+                                            <div className="mt-4">
+                                                <h5 className="text-lg font-semibold text-gray-700">
+                                                    פעולות מומלצות:
+                                                </h5>
+                                                <ul className="list-disc list-inside mt-2 space-y-2">
+                                                    {developmentTools[resource].פעולות.map((action, i) => (
+                                                        <li key={i} className="text-gray-600 text-lg">
+                                                            {action}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            
+                                            <div className="mt-4 p-3 bg-blue-50 rounded">
+                                                <p className="text-blue-800 text-lg">
+                                                    💡 טיפ: התחל/י עם פעולה אחת קטנה ופשוטה. 
+                                                    הצלחה קטנה תוביל למוטיבציה להמשיך.
+                                                </p>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+                    </div>
+
+                    {/* הנחיות שימוש */}
+                    <div className="mt-6 bg-blue-50 p-6 rounded-lg">
+                        <h4 className="text-xl font-bold mb-4">איך להשתמש במפה:</h4>
+                        <ol className="list-decimal list-inside space-y-3 text-lg text-gray-700">
+                            <li>תאר/י את הסיטואציה אותה תרצה/י לבחון</li>
+                            <li>לחץ/י על כל משאב במפה</li>
+                            <li>דרג/י את עוצמת המשאב בסיטואציה (1-4)</li>
+                            <li>הוסף/י הערות רלוונטיות לכל משאב</li>
+                            <li>בחן/י את התמונה המלאה - היכן המשאבים החזקים והיכן נדרש חיזוק</li>
+                            <li>קרא/י את ההמלצות לפיתוח עבור המשאבים החלשים יותר</li>
+                            <li>בחר/י פעולה אחת קטנה להתחיל איתה</li>
+                        </ol>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(
+            <ResourceMap />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
