@@ -9,8 +9,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- React -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
     <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -37,14 +37,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .recommendation-box {
-            background-color: #f8fafc;
-            border-right: 4px solid #3b82f6;
-            padding: 16px;
-            margin: 8px 0;
-            border-radius: 4px;
-        }
-
         .research-evidence {
             background-color: #eff6ff;
             padding: 12px;
@@ -65,6 +57,84 @@
     <div id="root"></div>
 
     <script type="text/babel">
+        const resourceDetails = {
+            'חוסן נפשי': {
+                מחקר: 'מחקרי מטא-אנליזה מראים שיפור של 40-65% בחוסן הנפשי באמצעות התערבויות מובנות',
+                כלים: [
+                    'תרגול מיינדפולנס יומי (20 דקות)',
+                    'יומן הכרת תודה',
+                    'תרגילי נשימה מובנים',
+                    'מדיטציה מודרכת'
+                ],
+                פעולות: [
+                    'זיהוי וכתיבת 3 הצלחות יומיות',
+                    'פיתוח שגרת בוקר מחזקת',
+                    'יצירת רשת תמיכה',
+                    'תרגול התמודדות הדרגתי'
+                ]
+            },
+            'ביטחון עצמי': {
+                מחקר: 'מחקרים בפסיכולוגיה חיובית מראים שיפור של 55% בביטחון העצמי דרך תיעוד הצלחות',
+                כלים: [
+                    'יומן הצלחות יומי',
+                    'תרגולי אסרטיביות',
+                    'הצבת יעדים קטנים',
+                    'תרגילי העצמה'
+                ],
+                פעולות: [
+                    'לקיחת אחריות על משימה חדשה בשבוע',
+                    'יציאה מדורגת מאזור הנוחות',
+                    'חגיגת הישגים קטנים',
+                    'התנסות שבועית בדבר חדש'
+                ]
+            },
+            'מודעות עצמית': {
+                מחקר: 'מחקרים מראים שיפור של 70% במודעות עצמית באמצעות רפלקציה מובנית',
+                כלים: [
+                    'יומן רפלקציה יומי',
+                    'תרגילי סריקת גוף',
+                    'מדיטציה ממוקדת',
+                    'משוב עצמי מובנה'
+                ],
+                פעולות: [
+                    'זיהוי דפוסי התנהגות',
+                    'מעקב אחר טריגרים רגשיים',
+                    'תיעוד תובנות יומיות',
+                    'שיתוף בתהליכים פנימיים'
+                ]
+            },
+            'יכולת התמודדות': {
+                מחקר: 'מחקרים מראים שיפור של 60% ביכולת התמודדות דרך למידה מניסיון מובנית',
+                כלים: [
+                    'מיפוי אסטרטגיות התמודדות',
+                    'תרגול פתרון בעיות',
+                    'טכניקות הרפיה',
+                    'יומן למידה מאתגרים'
+                ],
+                פעולות: [
+                    'ניתוח שבועי של התמודדויות',
+                    'תרגול טכניקה חדשה',
+                    'שיתוף בקבוצת תמיכה',
+                    'יצירת תוכניות גיבוי'
+                ]
+            },
+            'גמישות מחשבתית': {
+                מחקר: 'מחקרים מראים שיפור של 50% בגמישות מחשבתית דרך תרגול מכוון',
+                כלים: [
+                    'תרגילי חשיבה יצירתית',
+                    'פתרון חידות',
+                    'למידת נושאים חדשים',
+                    'תרגול נקודות מבט שונות'
+                ],
+                פעולות: [
+                    'אימוץ פרספקטיבות חדשות',
+                    'התנסות בחוויות חדשות',
+                    'אתגור הנחות יסוד',
+                    'חיפוש פתרונות חלופיים'
+                ]
+            }
+        };
+
         function ResourceMap() {
             const [situation, setSituation] = React.useState('');
             const [activeResource, setActiveResource] = React.useState(null);
@@ -96,79 +166,6 @@
                     'אופטימיות',
                     'מוטיבציה'
                 ]
-            };const researchEvidence = {
-                'חוסן נפשי': {
-                    מחקרים: [
-                        'מחקרי מטא-אנליזה הראו שתרגול מיינדפולנס משפר חוסן נפשי ב-40% בממוצע',
-                        'מחקרים בתחום ה-CBT מצביעים על יעילות של 65% בבניית חוסן נפשי'
-                    ],
-                    כלים: [
-                        'תרגול מיינדפולנס יומי (20 דקות)',
-                        'יומן הכרת תודה שבועי',
-                        'תרגילי נשימה מובנים',
-                        'מדיטציה מודרכת'
-                    ],
-                    פעולות: [
-                        'זיהוי וכתיבת 3 הצלחות יומיות',
-                        'פיתוח שגרת בוקר מחזקת',
-                        'יצירת רשת תמיכה מגוונת',
-                        'תרגול התמודדות הדרגתי'
-                    ]
-                },
-                'ביטחון עצמי': {
-                    מחקרים: [
-                        'מחקרי פסיכולוגיה חיובית מראים שיפור של 55% בביטחון העצמי דרך תיעוד הצלחות',
-                        'שימוש בטכניקות אסרטיביות מוביל לשיפור של 45% בביטחון העצמי'
-                    ],
-                    כלים: [
-                        'יומן הצלחות יומי',
-                        'תרגולי אסרטיביות מובנים',
-                        'הצבת יעדים קטנים',
-                        'תרגילי העצמה אישית'
-                    ],
-                    פעולות: [
-                        'לקיחת אחריות על משימה חדשה בשבוע',
-                        'יציאה מדורגת מאזור הנוחות',
-                        'חגיגת הישגים קטנים',
-                        'התנסות שבועית בדבר חדש'
-                    ]
-                },
-                'יכולת התמודדות': {
-                    מחקרים: [
-                        'מחקרים מראים שפיתוח אסטרטגיות התמודדות מגוונות מעלה את החוסן ב-50%',
-                        'למידה מניסיון מובנית משפרת יכולות התמודדות ב-60%'
-                    ],
-                    כלים: [
-                        'מיפוי אסטרטגיות התמודדות',
-                        'תרגול פתרון בעיות מובנה',
-                        'טכניקות הרפיה מתקדמות',
-                        'יומן למידה מאתגרים'
-                    ],
-                    פעולות: [
-                        'ניתוח שבועי של התמודדויות',
-                        'תרגול טכניקת התמודדות חדשה',
-                        'שיתוף בקבוצת תמיכה',
-                        'יצירת תוכניות גיבוי'
-                    ]
-                },
-                'מודעות עצמית': {
-                    מחקרים: [
-                        'מחקרים בתחום המיינדפולנס מראים שיפור של 70% במודעות עצמית',
-                        'רפלקציה מובנית משפרת מודעות עצמית ב-55%'
-                    ],
-                    כלים: [
-                        'יומן רפלקציה יומי',
-                        'תרגילי סריקת גוף',
-                        'מדיטציה ממוקדת',
-                        'משוב עצמי מובנה'
-                    ],
-                    פעולות: [
-                        'זיהוי דפוסי התנהגות',
-                        'מעקב אחר טריגרים רגשיים',
-                        'תיעוד תובנות יומיות',
-                        'שיתוף בתהליכים פנימיים'
-                    ]
-                }
             };
 
             const categories = Object.keys(resources);
@@ -231,9 +228,29 @@
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="flex flex-col lg:flex-row gap-6">
                         {/* מפת המשאבים */}
-                        <div className="lg:col-span-9 bg-white p-4 rounded-lg shadow-lg">
+                        <div className="lg:w-3/4 bg-white p-4 rounded-lg shadow-lg relative">
+                            <div className="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-md">
+                                <h3 className="text-lg font-bold mb-2">עוצמת משאב:</h3>
+                                {[
+                                    { level: 1, color: '#FF9999', text: 'חלש' },
+                                    { level: 2, color: '#FFD699', text: 'בינוני' },
+                                    { level: 3, color: '#99FF99', text: 'חזק' },
+                                    { level: 4, color: '#9999FF', text: 'חזק מאוד' }
+                                ].map((item) => (
+                                    <div key={item.level} className="flex items-center mb-1">
+                                        <div 
+                                            className="w-4 h-4 mr-2"
+                                            style={{ backgroundColor: item.color }}
+                                        />
+                                        <span className="text-sm">
+                                            {`${item.text} (${item.level})`}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+
                             <svg viewBox="0 0 600 600" className="w-full h-full">
                                 {[4, 3, 2, 1].map((level) => (
                                     <g key={level}>
@@ -315,7 +332,7 @@
                                                         fill={activeResource === resource ? "#3B82F6" : "#93C5FD"}
                                                     />
                                                     <text
-                                                        x={pos.x > 300 ? 10 : -10}
+                                                        x={pos.x > 300? 10 : -10}
                                                         y="5"
                                                         textAnchor={pos.x > 300 ? "start" : "end"}
                                                         fontSize="14"
@@ -332,28 +349,10 @@
                             </svg>
                         </div>
 
-                        {/* מקרא */}
-                        <div className="lg:col-span-3 bg-white p-4 rounded-lg shadow-lg">
-                            <h3 className="text-xl font-bold mb-4">עוצמת משאב:</h3>
-                            {[
-                                { level: 1, color: '#FF9999', text: 'חלש' },
-                                { level: 2, color: '#FFD699', text: 'בינוני' },
-                                { level: 3, color: '#99FF99', text: 'חזק' },
-                                { level: 4, color: '#9999FF', text: 'חזק מאוד' }
-                            ].map((item) => (
-                                <div key={item.level} className="flex items-center mb-3">
-                                    <div 
-                                        className="w-6 h-6 mr-3"
-                                        style={{ backgroundColor: item.color }}
-                                    />
-                                    <span className="text-lg">
-                                        {`${item.text} (${item.level})`}
-                                    </span>
-                                </div>
-                            ))}
-
-                            {activeResource && (
-                                <div className="mt-6">
+                        {/* פאנל צד */}
+                        <div className="lg:w-1/4">
+                            {activeResource ? (
+                                <div className="bg-white p-4 rounded-lg shadow-lg">
                                     <h3 className="text-xl font-bold mb-4">{activeResource}</h3>
                                     <div className="mb-6">
                                         <label className="rating-label">
@@ -386,6 +385,12 @@
                                         />
                                     </div>
                                 </div>
+                            ) : (
+                                <div className="bg-blue-50 p-4 rounded-lg">
+                                    <p className="text-lg text-blue-800 text-center">
+                                        בחר/י משאב במפה כדי לדרג ולהוסיף הערות
+                                    </p>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -402,10 +407,71 @@
                                         {resource} (דירוג נוכחי: {rating}/4)
                                     </h4>
                                     
-                                    {researchEvidence[resource] && (
+                                    {resourceDetails[resource] && (
                                         <>
                                             <div className="research-evidence mb-4">
-                                                <h5 className="font-semibold mb-2">ביסוס מחקרי:</h5>
-                                                <ul className="list-disc list-inside space-y-1">
-                                                    {researchEvidence[resource].מחקרים.map((evidence, i) => (
-                                                        <li key={i} className="text-gray-700">
+                                                <p className="font-medium">ביסוס מחקרי:</p>
+                                                <p className="mt-1">{resourceDetails[resource].מחקר}</p>
+                                            </div>
+                                            
+                                            <div className="mt-4">
+                                                <h5 className="text-lg font-semibold text-gray-700">
+                                                    כלים מומלצים לפיתוח:
+                                                </h5>
+                                                <ul className="list-disc list-inside mt-2 space-y-2">
+                                                    {resourceDetails[resource].כלים.map((tool, i) => (
+                                                        <li key={i} className="text-gray-600 text-lg">
+                                                            {tool}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            
+                                            <div className="mt-4">
+                                                <h5 className="text-lg font-semibold text-gray-700">
+                                                    פעולות מומלצות:
+                                                </h5>
+                                                <ul className="list-disc list-inside mt-2 space-y-2">
+                                                    {resourceDetails[resource].פעולות.map((action, i) => (
+                                                        <li key={i} className="text-gray-600 text-lg">
+                                                            {action}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+
+                        {Object.entries(ratings).filter(([_, rating]) => rating <= 2).length === 0 && (
+                            <p className="text-lg text-gray-600 text-center">
+                                לא נמצאו משאבים הדורשים חיזוק (דירוג נמוך מ-3)
+                            </p>
+                        )}
+                    </div>
+
+                    {/* הנחיות שימוש */}
+                    <div className="mt-6 bg-blue-50 p-6 rounded-lg">
+                        <h4 className="text-xl font-bold mb-4">איך להשתמש במפה:</h4>
+                        <ol className="list-decimal list-inside space-y-3 text-lg text-gray-700">
+                            <li>תאר/י את הסיטואציה אותה תרצה/י לבחון</li>
+                            <li>לחץ/י על כל משאב במפה</li>
+                            <li>דרג/י את עוצמת המשאב בסיטואציה (1-4)</li>
+                            <li>הוסף/י הערות רלוונטיות לכל משאב</li>
+                            <li>בחן/י את התמונה המלאה - היכן המשאבים החזקים והיכן נדרש חיזוק</li>
+                            <li>קרא/י את ההמלצות המבוססות מחקר עבור המשאבים החלשים יותר</li>
+                            <li>בחר/י פעולה אחת קטנה להתחיל איתה</li>
+                        </ol>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(
+            <ResourceMap />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
