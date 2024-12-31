@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מפת משאבים - רות בידרמן</title>
+    <title>גלה את משאביך - רות בידרמן</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,35 +21,25 @@
         body {
             font-family: 'Rubik', sans-serif;
             direction: rtl;
-            background-color: #f5f7fa;
+            background-color: #f8fafc;
         }
 
-        .text-large {
-            font-size: 1.2rem;
+        .intro-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .resource-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 12px 0;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        .intro-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .research-evidence {
-            background-color: #eff6ff;
-            padding: 12px;
-            margin-top: 8px;
-            border-radius: 4px;
-            font-size: 0.95rem;
-        }
-
-        .rating-label {
-            font-size: 1.1rem;
-            color: #4b5563;
-            margin-bottom: 8px;
-            display: block;
+        .resource-map {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -57,83 +47,133 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const resourceDetails = {
-            'חוסן נפשי': {
-                מחקר: 'מחקרי מטא-אנליזה מראים שיפור של 40-65% בחוסן הנפשי באמצעות התערבויות מובנות',
-                כלים: [
-                    'תרגול מיינדפולנס יומי (20 דקות)',
-                    'יומן הכרת תודה',
-                    'תרגילי נשימה מובנים',
-                    'מדיטציה מודרכת'
-                ],
-                פעולות: [
-                    'זיהוי וכתיבת 3 הצלחות יומיות',
-                    'פיתוח שגרת בוקר מחזקת',
-                    'יצירת רשת תמיכה',
-                    'תרגול התמודדות הדרגתי'
-                ]
-            },
-            'ביטחון עצמי': {
-                מחקר: 'מחקרים בפסיכולוגיה חיובית מראים שיפור של 55% בביטחון העצמי דרך תיעוד הצלחות',
-                כלים: [
-                    'יומן הצלחות יומי',
-                    'תרגולי אסרטיביות',
-                    'הצבת יעדים קטנים',
-                    'תרגילי העצמה'
-                ],
-                פעולות: [
-                    'לקיחת אחריות על משימה חדשה בשבוע',
-                    'יציאה מדורגת מאזור הנוחות',
-                    'חגיגת הישגים קטנים',
-                    'התנסות שבועית בדבר חדש'
-                ]
-            },
-            'מודעות עצמית': {
-                מחקר: 'מחקרים מראים שיפור של 70% במודעות עצמית באמצעות רפלקציה מובנית',
-                כלים: [
-                    'יומן רפלקציה יומי',
-                    'תרגילי סריקת גוף',
-                    'מדיטציה ממוקדת',
-                    'משוב עצמי מובנה'
-                ],
-                פעולות: [
-                    'זיהוי דפוסי התנהגות',
-                    'מעקב אחר טריגרים רגשיים',
-                    'תיעוד תובנות יומיות',
-                    'שיתוף בתהליכים פנימיים'
-                ]
-            },
-            'יכולת התמודדות': {
-                מחקר: 'מחקרים מראים שיפור של 60% ביכולת התמודדות דרך למידה מניסיון מובנית',
-                כלים: [
-                    'מיפוי אסטרטגיות התמודדות',
-                    'תרגול פתרון בעיות',
-                    'טכניקות הרפיה',
-                    'יומן למידה מאתגרים'
-                ],
-                פעולות: [
-                    'ניתוח שבועי של התמודדויות',
-                    'תרגול טכניקה חדשה',
-                    'שיתוף בקבוצת תמיכה',
-                    'יצירת תוכניות גיבוי'
-                ]
-            },
-            'גמישות מחשבתית': {
-                מחקר: 'מחקרים מראים שיפור של 50% בגמישות מחשבתית דרך תרגול מכוון',
-                כלים: [
-                    'תרגילי חשיבה יצירתית',
-                    'פתרון חידות',
-                    'למידת נושאים חדשים',
-                    'תרגול נקודות מבט שונות'
-                ],
-                פעולות: [
-                    'אימוץ פרספקטיבות חדשות',
-                    'התנסות בחוויות חדשות',
-                    'אתגור הנחות יסוד',
-                    'חיפוש פתרונות חלופיים'
-                ]
-            }
-        };
+        function App() {
+            return (
+                <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+                    {/* כותרת ראשית */}
+                    <div className="pt-12 pb-6 text-center">
+                        <h1 className="text-5xl font-bold text-blue-800 mb-4">
+                            עכשיו גלה את משאביך
+                        </h1>
+                        <h2 className="text-2xl text-gray-600">
+                            מאת רות בידרמן
+                        </h2>
+                    </div>
+
+                    {/* הסבר ומבוא */}
+                    <div className="max-w-6xl mx-auto px-4 py-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                            <div className="intro-card p-8">
+                                <h3 className="text-2xl font-bold text-blue-700 mb-4">
+                                    מהי מפת המשאבים?
+                                </h3>
+                                <p className="text-lg text-gray-700">
+                                    מפת המשאבים האישית היא כלי ייחודי המאפשר לך לזהות ולמפות את החוזקות, 
+                                    הכישורים והיכולות העומדים לרשותך. באמצעות המפה תוכל/י לקבל תמונה מקיפה 
+                                    של המשאבים שלך בארבעה תחומים מרכזיים: אישי, מקצועי, חברתי ורגשי.
+                                </p>
+                            </div>
+
+                            <div className="intro-card p-8">
+                                <h3 className="text-2xl font-bold text-blue-700 mb-4">
+                                    למה זה חשוב?
+                                </h3>
+                                <p className="text-lg text-gray-700">
+                                    מחקרים מראים שזיהוי וטיפוח משאבים אישיים מגביר חוסן נפשי, משפר ביצועים 
+                                    ומעצים את תחושת המסוגלות. הבנת המשאבים העומדים לרשותנו מאפשרת לנו 
+                                    להתמודד טוב יותר עם אתגרים ולממש את הפוטנציאל שלנו.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                            <div className="intro-card p-6">
+                                <h3 className="text-xl font-bold text-blue-700 mb-4">
+                                    איך זה עובד?
+                                </h3>
+                                <ul className="space-y-3 text-gray-700">
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">➊</span>
+                                        דרג/י כל משאב בסולם 1-4
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">➋</span>
+                                        קבל/י ניתוח מפורט של החוזקות
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">➌</span>
+                                        גלה/י הזדמנויות לצמיחה
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">➍</span>
+                                        קבל/י כלים מעשיים לפיתוח
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="intro-card p-6">
+                                <h3 className="text-xl font-bold text-blue-700 mb-4">
+                                    מה תקבל/י?
+                                </h3>
+                                <ul className="space-y-3 text-gray-700">
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-green-500">✓</span>
+                                        תמונה מקיפה של המשאבים שלך
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-green-500">✓</span>
+                                        המלצות מבוססות מחקר
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-green-500">✓</span>
+                                        כלים מעשיים לשיפור
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-green-500">✓</span>
+                                        תוכנית פיתוח אישית
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="intro-card p-6">
+                                <h3 className="text-xl font-bold text-blue-700 mb-4">
+                                    למה להתחיל עכשיו?
+                                </h3>
+                                <ul className="space-y-3 text-gray-700">
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">★</span>
+                                        הבנה טובה יותר של החוזקות שלך
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">★</span>
+                                        זיהוי הזדמנויות לצמיחה
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">★</span>
+                                        פיתוח מכוון של יכולות
+                                    </li>
+                                    <li className="flex items-center">
+                                        <span className="mr-2 text-blue-500">★</span>
+                                        העצמת תחושת המסוגלות
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="text-center mb-12">
+                            <button 
+                                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-700 transition-colors"
+                                onClick={() => document.getElementById('resource-map').scrollIntoView({ behavior: 'smooth' })}
+                            >
+                                התחל/י למפות את המשאבים שלך
+                            </button>
+                        </div>
+                    </div><div id="resource-map" className="resource-map p-8">
+                        <ResourceMap />
+                    </div>
+                </div>
+            );
+        }
 
         function ResourceMap() {
             const [situation, setSituation] = React.useState('');
@@ -142,30 +182,86 @@
             const [notes, setNotes] = React.useState({});
 
             const resources = {
-                'אישיים': [
+                'כישורים אישיים': [
                     'חוסן נפשי',
                     'ביטחון עצמי',
-                    'יכולת התמודדות',
-                    'גמישות מחשבתית'
-                ],
-                'חברתיים': [
-                    'תמיכה משפחתית',
-                    'חברים קרובים',
-                    'קהילה',
-                    'רשת מקצועית'
-                ],
-                'מעשיים': [
-                    'כלים וידע',
-                    'ניסיון קודם',
-                    'משאבים כלכליים',
-                    'זמן פנוי'
-                ],
-                'רגשיים': [
+                    'גמישות מחשבתית',
+                    'יצירתיות',
                     'מודעות עצמית',
+                    'יכולת למידה'
+                ],
+                'כישורים חברתיים': [
+                    'תקשורת בינאישית',
+                    'אמפתיה',
+                    'עבודת צוות',
+                    'מנהיגות',
+                    'יכולת השפעה',
+                    'יצירת קשרים'
+                ],
+                'כישורים מקצועיים': [
+                    'מומחיות תחומית',
+                    'ניהול זמן',
+                    'פתרון בעיות',
+                    'חשיבה אנליטית',
+                    'יזמות',
+                    'קבלת החלטות'
+                ],
+                'משאבים רגשיים': [
                     'ויסות רגשי',
                     'אופטימיות',
+                    'הנעה עצמית',
+                    'התמודדות עם לחץ',
+                    'חוסן רגשי',
                     'מוטיבציה'
                 ]
+            };
+
+            const resourceDetails = {
+                'חוסן נפשי': {
+                    מחקר: 'מחקרים מראים שיפור של 40-65% בחוסן הנפשי באמצעות התערבויות מובנות ותרגול יומי',
+                    כלים: [
+                        'תרגול מיינדפולנס יומי (20 דקות)',
+                        'יומן הכרת תודה',
+                        'תרגילי נשימה מובנים',
+                        'מדיטציה מודרכת'
+                    ],
+                    פעולות: [
+                        'זיהוי וכתיבת 3 הצלחות יומיות',
+                        'פיתוח שגרת בוקר מחזקת',
+                        'יצירת רשת תמיכה',
+                        'תרגול התמודדות הדרגתי'
+                    ]
+                },
+                'ביטחון עצמי': {
+                    מחקר: 'מחקרי פסיכולוגיה חיובית מראים שיפור של 55% בביטחון העצמי דרך תיעוד הצלחות ותרגול יומי',
+                    כלים: [
+                        'יומן הצלחות יומי',
+                        'תרגולי אסרטיביות',
+                        'הצבת יעדים קטנים',
+                        'תרגילי העצמה'
+                    ],
+                    פעולות: [
+                        'לקיחת אחריות על משימה חדשה בשבוע',
+                        'יציאה מדורגת מאזור הנוחות',
+                        'חגיגת הישגים קטנים',
+                        'התנסות שבועית בדבר חדש'
+                    ]
+                },
+                'תקשורת בינאישית': {
+                    מחקר: 'מחקרים מראים שתרגול מיומנויות תקשורת משפר ב-70% את איכות הקשרים החברתיים והמקצועיים',
+                    כלים: [
+                        'תרגול הקשבה פעילה',
+                        'למידת שפת גוף',
+                        'פיתוח אמפתיה',
+                        'תקשורת אסרטיבית'
+                    ],
+                    פעולות: [
+                        'תרגול שיחות מאתגרות',
+                        'קבלת ומתן משוב',
+                        'השתתפות בקבוצות דיון',
+                        'יצירת קשרים חדשים'
+                    ]
+                }
             };
 
             const categories = Object.keys(resources);
@@ -205,15 +301,6 @@
             return (
                 <div className="p-4 max-w-6xl mx-auto">
                     <div className="mb-8">
-                        <h1 className="text-4xl font-bold mb-2 text-center text-blue-800">
-                            עכשיו בחן את משאביך
-                        </h1>
-                        <h2 className="text-2xl text-center text-gray-600 mb-6">
-                            מאת רות בידרמן
-                        </h2>
-                        <p className="text-xl text-center text-gray-700 mb-8">
-                            מפת המשאבים האישית מאפשרת לך לזהות, למפות ולפתח את המשאבים שלך באופן מושכל ומבוסס מחקר
-                        </p>
                         <div className="mb-6">
                             <label className="block text-xl text-gray-700 mb-2">
                                 הסיטואציה שברצוני לבחון:
@@ -228,10 +315,9 @@
                         </div>
                     </div>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
-                        {/* מפת המשאבים */}
-                        <div className="lg:w-3/4 bg-white p-4 rounded-lg shadow-lg relative">
-                            <div className="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-md">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div className="lg:col-span-9 bg-white p-4 rounded-lg shadow-lg relative">
+                            <div className="absolute left-4 top-4 bg-white p-4 rounded-lg shadow-md z-10">
                                 <h3 className="text-lg font-bold mb-2">עוצמת משאב:</h3>
                                 {[
                                     { level: 1, color: '#FF9999', text: 'חלש' },
@@ -241,7 +327,7 @@
                                 ].map((item) => (
                                     <div key={item.level} className="flex items-center mb-1">
                                         <div 
-                                            className="w-4 h-4 mr-2"
+                                            className="w-4 h-4 ml-2"
                                             style={{ backgroundColor: item.color }}
                                         />
                                         <span className="text-sm">
@@ -332,7 +418,7 @@
                                                         fill={activeResource === resource ? "#3B82F6" : "#93C5FD"}
                                                     />
                                                     <text
-                                                        x={pos.x > 300? 10 : -10}
+                                                        x={pos.x > 300 ? 10 : -10}
                                                         y="5"
                                                         textAnchor={pos.x > 300 ? "start" : "end"}
                                                         fontSize="14"
@@ -349,13 +435,12 @@
                             </svg>
                         </div>
 
-                        {/* פאנל צד */}
-                        <div className="lg:w-1/4">
+                        <div className="lg:col-span-3">
                             {activeResource ? (
                                 <div className="bg-white p-4 rounded-lg shadow-lg">
                                     <h3 className="text-xl font-bold mb-4">{activeResource}</h3>
                                     <div className="mb-6">
-                                        <label className="rating-label">
+                                        <label className="block text-gray-700 mb-2">
                                             דירוג (1-4):
                                         </label>
                                         <input
@@ -373,7 +458,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="rating-label">
+                                        <label className="block text-gray-700 mb-2">
                                             הערות:
                                         </label>
                                         <textarea
@@ -395,21 +480,20 @@
                         </div>
                     </div>
 
-                    {/* ניתוח והמלצות */}
                     <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
                         <h3 className="text-2xl font-bold mb-6">ניתוח והמלצות מבוססות מחקר</h3>
                         
                         {Object.entries(ratings)
                             .filter(([resource, rating]) => rating <= 2)
                             .map(([resource, rating]) => (
-                                <div key={resource} className="resource-card">
+                                <div key={resource} className="resource-card mb-6">
                                     <h4 className="text-xl font-bold text-blue-700 mb-4">
                                         {resource} (דירוג נוכחי: {rating}/4)
                                     </h4>
                                     
                                     {resourceDetails[resource] && (
                                         <>
-                                            <div className="research-evidence mb-4">
+                                            <div className="bg-blue-50 p-4 rounded mb-4">
                                                 <p className="font-medium">ביסוס מחקרי:</p>
                                                 <p className="mt-1">{resourceDetails[resource].מחקר}</p>
                                             </div>
@@ -417,8 +501,7 @@
                                             <div className="mt-4">
                                                 <h5 className="text-lg font-semibold text-gray-700">
                                                     כלים מומלצים לפיתוח:
-                                                </h5>
-                                                <ul className="list-disc list-inside mt-2 space-y-2">
+                                                </h5><ul className="list-disc list-inside mt-2 space-y-2">
                                                     {resourceDetails[resource].כלים.map((tool, i) => (
                                                         <li key={i} className="text-gray-600 text-lg">
                                                             {tool}
@@ -439,19 +522,25 @@
                                                     ))}
                                                 </ul>
                                             </div>
+
+                                            <div className="mt-4 p-3 bg-blue-50 rounded">
+                                                <p className="text-blue-800 text-lg">
+                                                    💡 טיפ: התחל/י עם פעולה אחת קטנה בשבוע. 
+                                                    הצלחה קטנה תוביל למוטיבציה להמשיך.
+                                                </p>
+                                            </div>
                                         </>
                                     )}
                                 </div>
                             ))}
 
                         {Object.entries(ratings).filter(([_, rating]) => rating <= 2).length === 0 && (
-                            <p className="text-lg text-gray-600 text-center">
+                            <p className="text-lg text-gray-600 text-center p-4">
                                 לא נמצאו משאבים הדורשים חיזוק (דירוג נמוך מ-3)
                             </p>
                         )}
                     </div>
 
-                    {/* הנחיות שימוש */}
                     <div className="mt-6 bg-blue-50 p-6 rounded-lg">
                         <h4 className="text-xl font-bold mb-4">איך להשתמש במפה:</h4>
                         <ol className="list-decimal list-inside space-y-3 text-lg text-gray-700">
@@ -469,7 +558,7 @@
         }
 
         ReactDOM.render(
-            <ResourceMap />,
+            <App />,
             document.getElementById('root')
         );
     </script>
